@@ -1,7 +1,7 @@
 package com.lpf.mvptest.base;
 
 /**
- * 视图基类
+ * 视图（View层）基础回调接口
  */
 public interface IBaseView<T> {
     /**

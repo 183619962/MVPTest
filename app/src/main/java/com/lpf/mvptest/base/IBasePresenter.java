@@ -1,11 +1,11 @@
 package com.lpf.mvptest.base;
 
 /**
- * 请求数据的回调<br>
+ * 控制器的基础回调接口
  * Presenter用于接受model获取（加载）数据后的回调
  * Created by Administrator on 2016/3/23.
  */
-public interface IBaseRequestCallBack<T> {
+public interface IBasePresenter<T> {
     /**
      * 开始请求之前
      */

@@ -6,7 +6,7 @@ package com.lpf.mvptest.base;
  * @param <T> 视图接口对象(view) 具体业务各自继承自IBaseView
  * @param <V> 业务请求返回的具体对象
  */
-public class BasePresenterImpl<T extends IBaseView, V> implements IBaseRequestCallBack<V> {
+public class BasePresenterImpl<T extends IBaseView, V> implements IBasePresenter<V> {
     public IBaseView iView;
 
     /**

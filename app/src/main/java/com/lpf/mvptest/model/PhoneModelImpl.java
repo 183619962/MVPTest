@@ -1,14 +1,10 @@
 package com.lpf.mvptest.model;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.google.gson.Gson;
 import com.lpf.mvptest.base.BaseModel;
-import com.lpf.mvptest.base.IBaseRequestCallBack;
+import com.lpf.mvptest.base.IBasePresenter;
 import com.lpf.mvptest.service.PhoneNunInfoService;
-
-import org.json.JSONObject;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -27,7 +23,7 @@ public class PhoneModelImpl extends BaseModel {
         phoneNunInfoService = retrofitManager.getService();
     }
 
-    public void loadPhoneNumInfo(String phoneNum, final IBaseRequestCallBack<PhoneNumInfo> callBack, final int requestTag) {
+    public void loadPhoneNumInfo(String phoneNum, final IBasePresenter<PhoneNumInfo> callBack, final int requestTag) {
         phoneNunInfoService.getBeforeNews("phone.get", phoneNum, "10003", "b59bc3ef6191eb9f747dd4e83c99f2a4", "json")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
