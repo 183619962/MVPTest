@@ -1,7 +1,7 @@
 package com.lpf.mvptest.base;
 
 /**
- * Created by Administrator on 2016/3/23.
+ * 接口的公共协议头
  */
 public class BaseBean {
 
