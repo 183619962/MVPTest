@@ -29,6 +29,12 @@ public class PhoneModelImpl extends BaseModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<PhoneNumInfo>() {
                     @Override
+                    public void onStart() {
+                        super.onStart();
+                        callBack.beforeRequest(requestTag);
+                    }
+
+                    @Override
                     public void onCompleted() {
                         callBack.requestComplete(requestTag);
                     }

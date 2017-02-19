@@ -1,5 +1,8 @@
 [toc]
 
+
+**转载请指明出处:[http://blog.csdn.net/lupengfei1009/article/details/50989066](http://blog.csdn.net/lupengfei1009/article/details/50989066)**
+
 这段时间看了不少基于MVP设计模式，然后结合RxJava+Retrofit写的开源项目，深受感触，为了能让更多像我这种基层码畜也能够体验一把大神们的世界，下面分享一点学习经验。
 
 ##什么是MVP
@@ -12,7 +15,7 @@
 - **presenter**
 	代理，用于协调管理model和view，通知model获取数据，model获取数据完之后，通知view更新界面
 
-	
+
 
 ##为什么要用MVP
 使用有一个最大的好处就是解耦，view就只负责更新UI，显示控件，完成与用户的交互；model的职责呢就是去加载数据；具体的model什么时候去获取数据，获取完了之后ui什么时候去更新，这一切都是由presenter去完成。这样做，一方面适合团队协作去开发，另一方面也方便测试，各个模块之间互不干扰。还有更多的好处和优点请自行百度。
@@ -530,6 +533,7 @@ public interface IBasePresenter<T> {
 	```
 
 - 定义获取归属地的Model
+
 	```
 	/**
  * 获取号码归属地的具体Model实现
@@ -549,6 +553,12 @@ public class PhoneModelImpl extends BaseModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<PhoneNumInfo>() {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        callBack.beforeRequest(requestTag);
+                    }
+
                     @Override
                     public void onCompleted() {
                         callBack.requestComplete(requestTag);
@@ -574,33 +584,32 @@ public class PhoneModelImpl extends BaseModel {
 	```
 - 定义一个用于获取号码归属地的代理对象（presenter）
 >在实例化代理对象的时候拿到前端（activity或者fragment）的view实例，并初始化Model对象，同时对外提供一个获取数据的方法，方便activity去获取数据。
+
 	```
 	/**
-	 * Presenter的实现，协调model去加载数据，获取model加载完成时候的回调，控制界面加载框的显示与隐藏
-	 */
-	public class PhonePresenterImpl extends BasePresenterImpl<PhoneNumInfoView, PhoneNumInfo> {
-	    private PhoneModelImpl phoneModel;
-	    private Context mContext;
+ * Presenter的实现，协调model去加载数据，获取model加载完成时候的回调，控制界面加载框的显示与隐藏
+ */
+public class PhonePresenterImpl extends BasePresenterImpl<PhoneNumInfoView, PhoneNumInfo> {
+    private PhoneModelImpl phoneModel;
+    private Context mContext;
 
 
-	    public PhonePresenterImpl(PhoneNumInfoView phoneNumInfoView, Context context) {
-	        super(phoneNumInfoView);
-	        this.mContext = context;
-	        phoneModel = new PhoneModelImpl(mContext);
-	    }
+    public PhonePresenterImpl(PhoneNumInfoView phoneNumInfoView, Context context) {
+        super(phoneNumInfoView);
+        this.mContext = context;
+        phoneModel = new PhoneModelImpl(mContext);
+    }
 
-	    /**
-	     * 获取归属地信息
-	     *
-	     * @param phoneNum   电话号码
-	     * @param requestTag 请求标识
-	     */
-	    public void getPhoneNumInfo(String phoneNum, int requestTag) {
-	        onResume();
-	        beforeRequest(requestTag);
-	        phoneModel.loadPhoneNumInfo(phoneNum, this, requestTag);
-	    }
-	}
+    /**
+     * 获取归属地信息
+     *
+     * @param phoneNum   电话号码
+     * @param requestTag 请求标识
+     */
+    public void getPhoneNumInfo(String phoneNum, int requestTag) {
+        phoneModel.loadPhoneNumInfo(phoneNum, this, requestTag);
+    }
+}
 	```
 
 - 实现activity中相关的代码
