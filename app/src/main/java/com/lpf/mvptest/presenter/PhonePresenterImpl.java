@@ -29,7 +29,6 @@ public class PhonePresenterImpl extends BasePresenterImpl<PhoneNumInfoView, Phon
      * @param requestTag 请求标识
      */
     public void getPhoneNumInfo(String phoneNum, int requestTag) {
-        onResume();
         beforeRequest(requestTag);
         phoneModel.loadPhoneNumInfo(phoneNum, this, requestTag);
     }
